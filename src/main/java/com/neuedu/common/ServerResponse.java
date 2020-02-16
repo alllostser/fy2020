@@ -42,14 +42,14 @@ public class ServerResponse<T> {
         return new ServerResponse(0);
     }
     public static <T>ServerResponse serverResponseBySucess(T data){
-        return new ServerResponse(0,null,data);
+        return new ServerResponse(data);
     }
     public static <T>ServerResponse serverResponseBySucess(String msg,T data){
         return new ServerResponse(0,msg,data);
     }
-    public static <T>ServerResponse serverResponseBySucess(String msg){
-        return new ServerResponse(msg);
-    }
+//    public static <T>ServerResponse serverResponseBySucess(String msg){
+//        return new ServerResponse(msg);
+//    }
     /**
      * 接口调用失败
      */

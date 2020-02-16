@@ -31,6 +31,7 @@
     delete from neuedu_users
     where id = #{id,jdbcType=INTEGER}
   </delete>
+<!--  用户注册-->
   <insert id="insert" parameterType="com.neuedu.pojo.User">
     insert into neuedu_users (id, username, password, 
       nickname, phone, email, 
@@ -113,39 +114,26 @@
       </if>
     </trim>
   </insert>
+<!--  登录状态更新个人信息-->
   <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.pojo.User">
     update neuedu_users
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
       <if test="nickname != null">
         nickname = #{nickname,jdbcType=VARCHAR},
       </if>
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="question != null">
+        question=#{question},
+      </if>
+      <if test="anwser != null">
+        anwser=#{anwser},
+      </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="loginNumber != null">
-        login_number = #{loginNumber,jdbcType=INTEGER},
-      </if>
+      update_date =now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -179,4 +167,25 @@
       </if>
     </where>
   </select>
+<!--  用户登录判断-->
+  <select id="selectByUsernameAndPassword" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_users
+    where username=#{username} and password=#{password}
+  </select>
+<!--  忘记密码-->
+  <select id="selectByUsername" resultType="string" parameterType="string">
+    select question from neuedu_users where username=#{usernmae}
+  </select>
+<!--  提交问题答案-->
+  <select id="selectByUsernameAndQuestionAndAnswer" resultType="integer">
+    select count(id) from neuedu_users where username=#{username} and question=#{question} and answer=#{answer}
+  </select>
+<!--  忘记密码的重设密码-->
+  <update id="updateByUsernameAndPasswordNew" >
+    update neuedu_users
+    set password=#{passwordNew}
+    where username=#{username}
+  </update>
 </mapper>
