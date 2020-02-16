@@ -13,20 +13,5 @@ import java.util.List;
 public class UserController {
     @Resource
     private UserService service;
-    @RequestMapping("/a.do")
-    public List<User> geta(){
-            return service.getUsers();
-        }
-    @RequestMapping("/b.do")
-    public User getUserById(String id){
-        System.out.println(id);
-        return service.selectByPrimaryKey(Integer.parseInt(id));
-    }
-//    @Value("${user.username}")
-    private String username;
-    @RequestMapping("/c.do")
-    public String getUser(){
-        System.out.println(username);
-        return username;
-    }
+
 }
