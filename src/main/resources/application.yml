@@ -1,0 +1,25 @@
+
+server:
+  port: 8080
+  servlet:
+    context-path: /manage
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/itdrjy9?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis:
+  mapper-locations: classpath:com/neuedu/dao/*Dao.xml
+  type-aliases-package: com.neuedu.pojo
+  config-location: classpath:mybatis-config.xml
+#showSql
+logging:
+  level:
+    com:
+      neuedu:
+        dao:
+          UsersDao: debug
+
