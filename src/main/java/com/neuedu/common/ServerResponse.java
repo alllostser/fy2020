@@ -1,12 +1,17 @@
 package com.neuedu.common;
 
+import lombok.Data;
+
 /**
  * 接口向前端响应对象
  */
+@Data
 public class ServerResponse<T> {
     private  int status;//接口返回的状态码 0：代表调用接口成功。 非0调用接口失败
     private String msg; //当调用失败时，封装错误信息
     private T data; //
+
+
     private ServerResponse(){
 
     }
@@ -18,7 +23,9 @@ public class ServerResponse<T> {
         this.status = status;
         this.msg = msg;
     }
-
+    private ServerResponse(String msg) {
+        this.msg = msg;
+    }
     private ServerResponse(int status, String msg, T data) {
         this.status = status;
         this.msg = msg;
@@ -40,7 +47,9 @@ public class ServerResponse<T> {
     public static <T>ServerResponse serverResponseBySucess(String msg,T data){
         return new ServerResponse(0,msg,data);
     }
-
+    public static <T>ServerResponse serverResponseBySucess(String msg){
+        return new ServerResponse(msg);
+    }
     /**
      * 接口调用失败
      */

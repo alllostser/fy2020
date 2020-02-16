@@ -1,6 +1,7 @@
 package com.neuedu.dao;
 
 import com.neuedu.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,4 +18,9 @@ public interface UsersDao {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    /**
+     * 判断参数是否存在
+     * */
+    int selectByUsernameOrEmailOrPhone(@Param("type") String type,@Param("value") String value);
 }

@@ -36,10 +36,9 @@
       nickname, phone, email, 
       type, status, create_date, 
       update_date, login_number)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (null, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP}, #{loginNumber,jdbcType=INTEGER})
+      0, 1, now(),now(), login_number+1)
   </insert>
   <insert id="insertSelective" parameterType="com.neuedu.pojo.User">
     insert into neuedu_users
@@ -164,4 +163,20 @@
       login_number = #{loginNumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectByUsernameOrEmailOrPhone" resultType="integer">
+    select count(id) from neuedu_users
+    <where>
+      <if test="type=='username'">
+        username=#{value}
+      </if>
+      <if test="type=='email'">
+        email=#{value}
+      </if>
+      <if test="type=='phone'">
+        phone=#{value}
+      </if>
+    </where>
+  </select>
 </mapper>
