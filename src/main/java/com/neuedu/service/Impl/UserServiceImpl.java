@@ -215,6 +215,11 @@ public class UserServiceImpl implements UserService {
         if (forgetToken == null || "".equals(forgetToken)){
             return ServerResponse.serverResponseByFail(StatusEnum.TOKEN_NOT_EMPTY.getStatus(),StatusEnum.TOKEN_NOT_EMPTY.getDesc());
         }
+        //判断用户名是否存在
+        String s = dao.selectByUsername(username);
+        if(StringUtils.isEmpty(s)){
+            return ServerResponse.serverResponseByFail(StatusEnum.USERNAME_NOT_EXISTS.getStatus(),StatusEnum.USERNAME_NOT_EXISTS.getDesc());
+        }
         //获取缓存中的token
         String token = TokenCache.getKey("token_" + username);
         //判断token是否失效
@@ -225,7 +230,8 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.serverResponseByFail(StatusEnum.TOKEN_MISMATCHING.getStatus(),StatusEnum.TOKEN_MISMATCHING.getDesc());
         }
         //数据库操作
-        int i = dao.updateByUsernameAndPasswordNew(username,passwordNew);
+        String md5CodeNew = MD5Utils.getMD5Code(passwordNew);
+        int i = dao.updateByUsernameAndPasswordNew(username,md5CodeNew);
         if (i<=0){
             //进行事务手动回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
