@@ -107,8 +107,8 @@ public class UserController {
      * */
     @RequestMapping(value = "/forget_get_question.do", method = RequestMethod.GET)
     public ServerResponse forgetGetQuestion(String username) {
-        service.forgetGetQuestion(username);
-        return ServerResponse.serverResponseBySucess("注销成功");
+        ServerResponse sr = service.forgetGetQuestion(username);
+        return ServerResponse.serverResponseBySucess(sr);
     }
 
     /**
@@ -136,7 +136,7 @@ public class UserController {
         if (user == null){
             return ServerResponse.serverResponseByFail(StatusEnum.USER_NOT_LOGIN.getStatus(),StatusEnum.USER_NOT_LOGIN.getDesc());
         }
-        ServerResponse sr = service.resetPassword(user.getId(),passwordOld,passwordNew);
+        ServerResponse sr = service.resetPassword(user.getUsername(),passwordOld,passwordNew);
         return sr;
     }
 

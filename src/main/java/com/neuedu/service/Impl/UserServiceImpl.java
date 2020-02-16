@@ -1,35 +1,25 @@
 package com.neuedu.service.Impl;
 
-import com.alibaba.druid.util.StringUtils;
+
 import com.neuedu.common.ServerResponse;
 import com.neuedu.common.StatusEnum;
 import com.neuedu.common.TokenCache;
 import com.neuedu.dao.UsersDao;
 import com.neuedu.pojo.User;
 import com.neuedu.service.UserService;
+import com.neuedu.utils.MD5Utils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Resource
     private UsersDao dao;
-
-    @Override
-    public List<User> getUsers() {
-        return dao.getUsers();
-    }
-
-    @Override
-    public User selectByPrimaryKey(Integer id) {
-        return dao.selectByPrimaryKey(id);
-    }
-
     /**
      * 用户注册
      * */
@@ -60,7 +50,7 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.serverResponseByFail(StatusEnum.QUESTION_NOT_EMPTY.getStatus(),StatusEnum.QUESTION_NOT_EMPTY.getDesc());
         }
         //密保答案非空判断
-        if (user.getAnwser() == null || "".equals(user.getAnwser())){
+        if (user.getAnswer() == null || "".equals(user.getAnswer())){
             return ServerResponse.serverResponseByFail(StatusEnum.ANSER_NOT_EMPTY.getStatus(),StatusEnum.ANSER_NOT_EMPTY.getDesc());
         }
         //检查用户名是否存在
@@ -68,6 +58,18 @@ public class UserServiceImpl implements UserService {
         if (i>0){
             return ServerResponse.serverResponseByFail(StatusEnum.USERNAME_EXISTS.getStatus(),StatusEnum.USERNAME_EXISTS.getDesc());
         }
+        //检查邮箱是否存在
+        int i2 = dao.selectByUsernameOrEmailOrPhone("email", user.getEmail());
+        if (i2>0){
+            return ServerResponse.serverResponseByFail(StatusEnum.EMAIL_EXISTS.getStatus(),StatusEnum.EMAIL_EXISTS.getDesc());
+        }
+        //检查电话是否存在
+        int i3 = dao.selectByUsernameOrEmailOrPhone("phone", user.getPhone());
+        if (i3>0){
+            return ServerResponse.serverResponseByFail(StatusEnum.PHONE_EXISTS.getStatus(),StatusEnum.PHONE_EXISTS.getDesc());
+        }
+        String md5Code = MD5Utils.getMD5Code(user.getPassword());
+        user.setPassword(md5Code);
         int insert = dao.insert(user);
         if (insert<=0){
             return ServerResponse.serverResponseByFail(StatusEnum.ERROR.getStatus(),StatusEnum.ERROR.getDesc());
@@ -88,7 +90,8 @@ public class UserServiceImpl implements UserService {
         if (password == null || "".equals(password)){
             return ServerResponse.serverResponseByFail(StatusEnum.PASSWORD_NOT_EMPTY.getStatus(),StatusEnum.PASSWORD_NOT_EMPTY.getDesc());
         }
-        User user = dao.selectByUsernameAndPassword(username, password);
+        String md5Code = MD5Utils.getMD5Code(password);
+        User user = dao.selectByUsernameAndPassword(username, md5Code);
         if(user == null){
             return ServerResponse.serverResponseByFail(StatusEnum.LOGIN_PARAM_ERROR.getStatus(),StatusEnum.LOGIN_PARAM_ERROR.getDesc());
         }
@@ -233,8 +236,29 @@ public class UserServiceImpl implements UserService {
     /**
      * 登录状态中重置密码
      * */
+    @Transactional
     @Override
-    public ServerResponse resetPassword(Integer id, String passwordOld, String passwordNew) {
-        return null;
+    public ServerResponse resetPassword(String username, String passwordOld, String passwordNew) {
+        //非空判断
+        if (passwordOld == null || "".equals(passwordOld)){
+            return ServerResponse.serverResponseByFail(StatusEnum.PASSWORD_NOT_EMPTY.getStatus(),StatusEnum.PASSWORD_NOT_EMPTY.getDesc());
+        }
+        if (passwordNew == null || "".equals(passwordNew)){
+            return ServerResponse.serverResponseByFail(StatusEnum.PASSWORD_NOT_EMPTY.getStatus(),"新密码不能为空");
+        }
+        String md5Code = MD5Utils.getMD5Code(passwordOld);
+        //查询密码是否匹配
+        User user = dao.selectByUsernameAndPassword(username,md5Code);
+        if (StringUtils.isEmpty(user)){
+            return ServerResponse.serverResponseByFail(StatusEnum.LOGIN_PARAM_ERROR.getStatus(),StatusEnum.LOGIN_PARAM_ERROR.getDesc());
+        }
+        String md5CodeNew = MD5Utils.getMD5Code(passwordNew);
+        int i = dao.updateByUsernameAndPasswordNew(username,md5CodeNew);
+        if (i<=0){
+            //进行事务手动回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return ServerResponse.serverResponseByFail(StatusEnum.UPDATA_FAILED.getStatus(),StatusEnum.UPDATA_FAILED.getDesc());
+        }
+        return ServerResponse.serverResponseBySucess(StatusEnum.UPDATE_SUCCESS.getDesc(),i);
     }
 }

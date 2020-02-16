@@ -34,11 +34,11 @@
 <!--  用户注册-->
   <insert id="insert" parameterType="com.neuedu.pojo.User">
     insert into neuedu_users (id, username, password, 
-      nickname, phone, email, 
+      nickname, phone, email, question,answer,
       type, status, create_date, 
       update_date, login_number)
     values (null, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{question},#{answer},
       0, 1, now(),now(), login_number+1)
   </insert>
   <insert id="insertSelective" parameterType="com.neuedu.pojo.User">
@@ -182,7 +182,7 @@
   <select id="selectByUsernameAndQuestionAndAnswer" resultType="integer">
     select count(id) from neuedu_users where username=#{username} and question=#{question} and answer=#{answer}
   </select>
-<!--  忘记密码的重设密码-->
+<!--  重设密码-->
   <update id="updateByUsernameAndPasswordNew" >
     update neuedu_users
     set password=#{passwordNew}

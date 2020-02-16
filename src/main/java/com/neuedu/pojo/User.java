@@ -19,7 +19,7 @@ public class User {
 
     private String question;
 
-    private String anwser;
+    private String answer;
 
     private Integer type;
 

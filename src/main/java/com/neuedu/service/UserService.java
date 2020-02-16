@@ -6,8 +6,6 @@ import com.neuedu.pojo.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> getUsers();
-    User selectByPrimaryKey(Integer id);
       //用户注册
     ServerResponse register(User user);
     //用户登录
@@ -25,5 +23,5 @@ public interface UserService {
     //忘记密码的重设密码
     ServerResponse forgetResetPassword(String username, String passwordNew, String forgetToken);
     //登录状态中重置密码
-    ServerResponse resetPassword(Integer id, String passwordOld, String passwordNew);
+    ServerResponse resetPassword(String username, String passwordOld, String passwordNew);
 }

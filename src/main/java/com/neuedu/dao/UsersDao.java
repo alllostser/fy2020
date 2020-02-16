@@ -27,6 +27,6 @@ public interface UsersDao {
     String selectByUsername(String username);
     //提交问题答案
     int selectByUsernameAndQuestionAndAnswer(@Param("username")String username, @Param("question")String question,@Param("answer")String answer);
-    //忘记密码的重设密码
+    //根据用户名重设密码
     int updateByUsernameAndPasswordNew(@Param("username")String username, @Param("passwordNew")String passwordNew);
 }
