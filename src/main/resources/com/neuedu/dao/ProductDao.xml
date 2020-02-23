@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.dao.ProductDao">
+  <resultMap id="BaseResultMap" type="com.neuedu.pojo.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="subtitle" jdbcType="VARCHAR" property="subtitle" />
+    <result column="main_image" jdbcType="VARCHAR" property="mainImage" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="sub_images" jdbcType="LONGVARCHAR" property="subImages" />
+    <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_new" jdbcType="BIT" property="isNew" />
+    <result column="is_hot" jdbcType="BIT" property="isHot" />
+    <result column="is_banner" jdbcType="BIT" property="isBanner" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, category_id, name, subtitle, main_image, price, sub_images, detail,stock, status, is_new, is_hot,
+    is_banner, create_time, update_time
+  </sql>
+<!--  根据商品id获取商品详情-->
+  <select id="selectByIdForDetail" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from neuedu_product
+    <where>
+      <if test="id != null">
+        id=#{id}
+      </if>
+      <if test="is_new != 0">
+        and is_new = 1
+      </if>
+      <if test="is_hot != 0">
+        and is_hot =1
+      </if>
+      <if test="is_banner != 0">
+        and is_banner = 1
+      </if>
+      and status = 1
+    </where>
+  </select>
+
+</mapper>

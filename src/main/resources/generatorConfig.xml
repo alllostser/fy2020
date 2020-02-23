@@ -14,9 +14,9 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/itdrjy9?useUnicode=true&amp;characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://123.57.49.162:3306/itdrjy9?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false"
                         userId="root"
-                        password="root">
+                        password="Gxy3286840.">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -35,7 +35,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="neuedu_users" domainObjectName="User" enableCountByExample="false"
+        <table tableName="second" domainObjectName="Second" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>

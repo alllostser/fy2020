@@ -6,18 +6,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UsersDao {
-    List<User> getUsers();
-    int deleteByPrimaryKey(Integer id);
     //用户注册
     int insert(User record);
-
-    int insertSelective(User record);
-
+    //获取当前登录用户的详细信息
     User selectByPrimaryKey(Integer id);
     //登录状态更新个人信息
     int updateByPrimaryKeySelective(User record);
-
-    int updateByPrimaryKey(User record);
 
     //判断参数是否存在
     int selectByUsernameOrEmailOrPhone(@Param("type") String type,@Param("value") String value);

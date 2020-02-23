@@ -18,19 +18,14 @@
     id, username, password, nickname, phone, email, type, status, create_date, update_date, 
     login_number
   </sql>
-  <select id="getUsers" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from neuedu_users
-  </select>
+<!--  获取当前登录用户的详细信息-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from neuedu_users
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from neuedu_users
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+
 <!--  用户注册-->
   <insert id="insert" parameterType="com.neuedu.pojo.User">
     insert into neuedu_users (id, username, password, 
@@ -41,79 +36,7 @@
       #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{question},#{answer},
       0, 1, now(),now(), login_number+1)
   </insert>
-  <insert id="insertSelective" parameterType="com.neuedu.pojo.User">
-    insert into neuedu_users
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="username != null">
-        username,
-      </if>
-      <if test="password != null">
-        password,
-      </if>
-      <if test="nickname != null">
-        nickname,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="createDate != null">
-        create_date,
-      </if>
-      <if test="updateDate != null">
-        update_date,
-      </if>
-      <if test="loginNumber != null">
-        login_number,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateDate != null">
-        #{updateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="loginNumber != null">
-        #{loginNumber,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+
 <!--  登录状态更新个人信息-->
   <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.pojo.User">
     update neuedu_users
@@ -137,22 +60,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.neuedu.pojo.User">
-    update neuedu_users
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      login_number = #{loginNumber,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
 
-
+<!--  判断参数是否存在-->
   <select id="selectByUsernameOrEmailOrPhone" resultType="integer">
     select count(id) from neuedu_users
     <where>
