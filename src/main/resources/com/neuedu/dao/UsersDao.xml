@@ -8,14 +8,14 @@
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="role" jdbcType="INTEGER" property="role" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="login_number" jdbcType="INTEGER" property="loginNumber" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, password, nickname, phone, email, type, status, create_date, update_date, 
+    id, username, password, nickname, phone, email, role, status, create_date, update_date,
     login_number
   </sql>
 <!--  获取当前登录用户的详细信息-->
@@ -30,7 +30,7 @@
   <insert id="insert" parameterType="com.neuedu.pojo.User">
     insert into neuedu_users (id, username, password, 
       nickname, phone, email, question,answer,
-      type, status, create_date, 
+      role, status, create_date,
       update_date, login_number)
     values (null, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{question},#{answer},

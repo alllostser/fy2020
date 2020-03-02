@@ -3,9 +3,8 @@ package com.neuedu.service;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.pojo.User;
 
-import java.util.List;
 
-public interface UserService {
+public interface IUserService {
       //用户注册
     ServerResponse register(User user);
     //用户登录

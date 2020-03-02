@@ -6,7 +6,7 @@ import com.neuedu.common.StatusEnum;
 import com.neuedu.common.TokenCache;
 import com.neuedu.dao.UsersDao;
 import com.neuedu.pojo.User;
-import com.neuedu.service.UserService;
+import com.neuedu.service.IUserService;
 import com.neuedu.utils.MD5Utils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
     @Resource
     private UsersDao dao;
     /**

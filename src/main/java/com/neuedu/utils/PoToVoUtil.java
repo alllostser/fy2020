@@ -6,6 +6,12 @@ import com.neuedu.pojo.vo.ProductVo;
 import java.io.IOException;
 
 public class PoToVoUtil {
+    /**
+     * 商品转商品vo
+     * @param product
+     * @return
+     * @throws IOException
+     */
     public static ProductVo productToProductVo(Product product) throws IOException {
         ProductVo vo = new ProductVo();
         vo.setImageHost(PropertiesUtil.getProperty("imageHost"));
@@ -22,4 +28,5 @@ public class PoToVoUtil {
         vo.setUpdateTime(TimeUtils.dateToStr(product.getUpdateTime()));
         return vo;
     }
+
 }

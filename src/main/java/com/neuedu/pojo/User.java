@@ -21,7 +21,7 @@ public class User {
 
     private String answer;
 
-    private Integer type;
+    private Integer role;
 
     private Integer status;
 

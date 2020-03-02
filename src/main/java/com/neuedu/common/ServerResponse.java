@@ -18,7 +18,10 @@ public class ServerResponse<T> {
     private ServerResponse(int status){
         this.status=status;
     }
-
+    private ServerResponse(int status,T data){
+        this.status=status;
+        this.data=data;
+    }
     private ServerResponse(int status, String msg) {
         this.status = status;
         this.msg = msg;
@@ -42,14 +45,14 @@ public class ServerResponse<T> {
         return new ServerResponse(0);
     }
     public static <T>ServerResponse serverResponseBySucess(T data){
-        return new ServerResponse(data);
+        return new ServerResponse(0,data);
     }
     public static <T>ServerResponse serverResponseBySucess(String msg,T data){
         return new ServerResponse(0,msg,data);
     }
-//    public static <T>ServerResponse serverResponseBySucess(String msg){
-//        return new ServerResponse(msg);
-//    }
+    public static ServerResponse serverResponseBySucess(String msg){
+        return new ServerResponse(0,msg);
+    }
     /**
      * 接口调用失败
      */

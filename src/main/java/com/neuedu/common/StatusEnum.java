@@ -26,7 +26,7 @@ public enum StatusEnum {
 
     //账号状态信息
     USER_DISABLED(105,"用户被禁用"),
-
+    USER_LIMITED_AUTHORITY(105,"用户无权限"),
     //更新信息
     UPDATE_SUCCESS(0,"更新成功"),
     UPDATA_FAILED(-1,"更新失败"),

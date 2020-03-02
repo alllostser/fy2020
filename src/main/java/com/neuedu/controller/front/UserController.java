@@ -5,7 +5,7 @@ import com.neuedu.common.ServerResponse;
 import com.neuedu.common.StatusEnum;
 import com.neuedu.pojo.User;
 import com.neuedu.pojo.vo.UsersVo;
-import com.neuedu.service.UserService;
+import com.neuedu.service.IUserService;
 import com.neuedu.utils.TimeUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class UserController {
     @Resource
-    private UserService service;
+    private IUserService service;
     /**
      * 用户注册
      * */
@@ -162,6 +162,9 @@ public class UserController {
     @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
     public ServerResponse logOut(HttpSession session) {
         session.removeAttribute(StatusEnum.LOGIN_USER);
+        if(session.getAttribute(StatusEnum.LOGIN_USER) != null){
+            return ServerResponse.serverResponseByFail(StatusEnum.ERROR.getStatus(), StatusEnum.ERROR.getDesc());
+        }
         return ServerResponse.serverResponseBySucess("注销成功");
     }
 }

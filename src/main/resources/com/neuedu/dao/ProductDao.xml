@@ -39,7 +39,158 @@
       <if test="is_banner != 0">
         and is_banner = 1
       </if>
-      and status = 1
+    </where>
+  </select>
+<!--  添加商品-->
+  <insert id="insert" parameterType="com.neuedu.pojo.Product">
+    insert into neuedu_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="subtitle != null">
+        subtitle,
+      </if>
+      <if test="mainImage != null">
+        main_image,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isNew != null">
+        is_new,
+      </if>
+      <if test="isHot != null">
+        is_hot,
+      </if>
+      <if test="isBanner != null">
+        is_banner,
+      </if>
+      create_time,
+      update_time,
+      <if test="subImages != null">
+        sub_images,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      null,
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null">
+        #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="mainImage != null">
+        #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null">
+        #{isNew,jdbcType=BIT},
+      </if>
+      <if test="isHot != null">
+        #{isHot,jdbcType=BIT},
+      </if>
+      <if test="isBanner != null">
+        #{isBanner,jdbcType=BIT},
+      </if>
+      now(),
+      now(),
+      <if test="subImages != null">
+        #{subImages,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+<!--  更具id查询商品-->
+  <select id="selectById" parameterType="integer" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from neuedu_product
+    where id=#{pid}
+  </select>
+<!--  更新商品-->
+  <update id="updateProductBySelective" parameterType="com.neuedu.pojo.Product">
+    update neuedu_product
+    <set>
+      <if test="categoryId!=null">
+        category_id = #{categoryId},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null">
+        subtitle = #{subtitle},
+      </if>
+      <if test="mainImage != null">
+        main_image = #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="subImages != null">
+        sub_images = #{subImages},
+      </if>
+      <if test="isNew != null">
+        is_new = #{isNew,jdbcType=BIT},
+      </if>
+      <if test="isHot != null">
+        is_hot = #{isHot,jdbcType=BIT},
+      </if>
+      <if test="isBanner != null">
+        is_banner = #{isBanner,jdbcType=BIT},
+      </if>
+      update_time = now(),
+      <if test="detail != null">
+        detail = #{detail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+<!--  按照商品名称和categoryId进行检索-->
+  <select id="findProductsByCategoryIdAndKeyword" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from neuedu_product
+    <where>
+      <if test="keyword != null and keyword != ''">
+        name like #{keyword}
+      </if>
+      <if test="categoryIds != null and categoryIds.size()>0">
+        and category_id in
+        <foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+          #{categoryId}
+        </foreach>
+      </if>
     </where>
   </select>
 
