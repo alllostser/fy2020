@@ -12,4 +12,8 @@ public interface IProductService {
     ServerResponse productList(Integer categoryId, String keyword, Integer pageNum, Integer pageSize, String orderBy);
     //后台-新增OR更新产品
     ServerResponse addOrUpdate(Product product);
+
+
+    //订单引用商品扣库存
+    ServerResponse reduceStock(Integer productId,Integer quantity);
 }

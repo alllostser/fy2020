@@ -188,4 +188,30 @@ public class ProductServiceImpl implements IProductService {
 
         return ServerResponse.serverResponseBySucess(pageInfo);
     }
+
+    /**
+     * 订单引用-商品扣库存
+     * @param productId
+     * @param quantity
+     * @return
+     */
+    @Override
+    public ServerResponse reduceStock(Integer productId, Integer quantity) {
+        //非空判断
+        if (productId == null || quantity == null){
+            return ServerResponse.serverResponseByFail(StatusEnum.PARAM_NOT_EMPTY.getStatus(),StatusEnum.PARAM_NOT_EMPTY.getDesc());
+        }
+        //扣库存
+        Product product = productDao.selectById(productId);
+        if (product == null){
+            return ServerResponse.serverResponseByFail(Consts.ProductStatusEnum.PRODUCT_NOT_HAVE.getStatus(),Consts.ProductStatusEnum.PRODUCT_NOT_HAVE.getDesc());
+        }
+        Integer stock = product.getStock();
+        stock-=quantity;
+        int count = productDao.reduceStock(productId,stock);
+        if (count<=0){
+            return ServerResponse.serverResponseByFail(Consts.OrderStatusEnum.REDUCESTOCK_FAILED.getStatus(),Consts.OrderStatusEnum.REDUCESTOCK_FAILED.getDesc());
+        }
+        return ServerResponse.serverResponseBySucess("减库存成功");
+    }
 }

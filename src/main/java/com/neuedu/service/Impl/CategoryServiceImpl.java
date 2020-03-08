@@ -1,6 +1,8 @@
 package com.neuedu.service.Impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.common.Consts;
+import com.neuedu.common.RedisApi;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.dao.CategoryDao;
 import com.neuedu.pojo.Category;
@@ -8,6 +10,7 @@ import com.neuedu.service.ICategoryService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +19,8 @@ import java.util.Set;
 public class CategoryServiceImpl implements ICategoryService {
     @Resource
     private CategoryDao dao;
+    @Resource
+    private RedisApi redisApi;
     /* 后台模块*/
 
     /**
@@ -108,12 +113,20 @@ public class CategoryServiceImpl implements ICategoryService {
         if (categoryId == null || categoryId<0 ){
             return ServerResponse.serverResponseByFail(Consts.CategoryStatusEnum.CATEGORY_ID_NULL.getStatus(),Consts.CategoryStatusEnum.CATEGORY_ID_NULL.getDesc());
         }
+//        String key = "categoryId_"+categoryId;
+//        String s = redisApi.get(key);
+//        if (s != null && !"".equals(s)){//如果不为空
+//            //将redis中的json数据转换为集合返回
+//            return ServerResponse.serverResponseBySucess(JSONObject.parseArray(s, Category.class));
+//        }
         //step2:获取该分类下子分类
         List<Category> categorys = dao.getSubCategorysById(categoryId);
         //step3：判断该分类是否有子分类
         if (categorys.size() <= 0){
             return ServerResponse.serverResponseByFail(Consts.CategoryStatusEnum.NO_CHILDREN_CATEGORY.getStatus(),Consts.CategoryStatusEnum.NO_CHILDREN_CATEGORY.getDesc());
         }
+        //将集合转换为json添加到reids中
+//        String set = redisApi.set(key, JSONObject.toJSONString(categorys));
         return ServerResponse.serverResponseBySucess(categorys);
     }
 
@@ -129,6 +142,11 @@ public class CategoryServiceImpl implements ICategoryService {
         if (categoryId == null || categoryId<0 ){
             return ServerResponse.serverResponseByFail(Consts.CategoryStatusEnum.CATEGORY_ID_NULL.getStatus(),Consts.CategoryStatusEnum.CATEGORY_ID_NULL.getDesc());
         }
+//        String key = "categoryList_"+categoryId;
+//        String s = redisApi.get(key);
+//        if (s !=null && !"".equals(s)){//如果不为空
+//
+//        }
         Set<Integer> set = new HashSet<>();
         Set<Integer> result = findAllSubCategory(set, categoryId);
         return ServerResponse.serverResponseBySucess(result);

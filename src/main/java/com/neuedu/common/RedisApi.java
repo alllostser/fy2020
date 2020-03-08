@@ -107,6 +107,27 @@ public class RedisApi {
         return result;
     }
 
+    /**
+     *清空当前库
+     * */
+    public String flusdb(){
+        Jedis jedis = jedisPool.getResource();
+        String s = jedis.flushDB();
+        jedis.close();
+        return s;
+    }
+
+    /**
+     *清空所有库
+     * */
+    public  String flushall(){
+        Jedis jedis = jedisPool.getResource();
+        String s = jedis.flushAll();
+        jedis.close();
+        return s;
+    }
+
+
 
     //哈希结构-api
 

@@ -139,6 +139,18 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
+<!--  查询购物车中用户已经选中的商品-->
+  <select id="findCartByUserIdAndChecked" parameterType="integer" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from neuedu_cart
+    where user_id = #{userId} and checked=1
+  </select>
+<!--  清除购物车中已下单的商品-->
+  <delete id="deleteBach" parameterType="list">
+    delete from neuedu_cart
+    where id in
+    <foreach collection="cartList"  item="cart" open="(" close=")" separator=",">
+      #{cart.id}
+    </foreach>
+  </delete>
 </mapper>

@@ -29,4 +29,8 @@ public interface CartDao {
     int insert(Cart record);
     //更新购物车商品数量
     int updateByPrimaryKey(Cart record);
+    //查询购物车中用户已经选中的商品
+    List<Cart> findCartByUserIdAndChecked(Integer userId);
+    //清除购物车中已下单的商品
+    int deleteBach(@Param("cartList") List<Cart> cartList);
 }

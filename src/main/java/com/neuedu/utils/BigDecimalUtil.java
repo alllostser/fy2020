@@ -1,6 +1,9 @@
 package com.neuedu.utils;
 
+import com.neuedu.pojo.OrderItem;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public class BigDecimalUtil {
 
@@ -18,6 +21,15 @@ public class BigDecimalUtil {
         return bigDecimal1.multiply(bigDecimal2);
     }
 
-
+    /**
+     * 计算订单总金额
+     * */
+    public static BigDecimal getOrderTotalPrice(List<OrderItem> orderItems){
+        BigDecimal orderTotalPrice = new BigDecimal("0");
+        for (OrderItem orderItem : orderItems) {
+            orderTotalPrice = BigDecimalUtil.add(String.valueOf(orderTotalPrice), String.valueOf(orderItem.getCurrentUnitPrice()));
+        }
+        return orderTotalPrice;
+    }
 
 }

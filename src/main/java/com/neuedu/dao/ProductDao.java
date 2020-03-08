@@ -21,4 +21,6 @@ public interface ProductDao {
     List<Product> findProductsByCategoryIdAndKeyword(
             @Param("categoryIds") List<Integer> categoryIds,
             @Param("keyword") String keyword);
+    //订单引用-商品扣库存
+    int reduceStock(@Param("productId") Integer productId,@Param("stock") Integer stock);
 }

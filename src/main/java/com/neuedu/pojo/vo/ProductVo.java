@@ -26,6 +26,8 @@ public class ProductVo {
 
     private Integer stock;
 
+    private Integer status;
+
     private String createTime;
 
     private String updateTime;

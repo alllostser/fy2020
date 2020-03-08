@@ -193,5 +193,11 @@
       </if>
     </where>
   </select>
-
+<!--  商品扣库存-->
+  <update id="reduceStock" parameterType="map">
+    update neuedu_product
+    set stock = #{stock},
+    update_time = now()
+    where id = #{productId}
+  </update>
 </mapper>

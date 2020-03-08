@@ -70,7 +70,16 @@ public class CategoryController {
      * @return
      */
     @RequestMapping(value = "/get_category.do",method = RequestMethod.GET)
-    public ServerResponse getCategory(Integer categoryId){
+    public ServerResponse getCategory(Integer categoryId,HttpSession session){
+        User user =(User) session.getAttribute(StatusEnum.LOGIN_USER);
+        //判断用户是否登录
+        if (user == null){
+            //未登录
+            return ServerResponse.serverResponseByFail(StatusEnum.USER_NOT_LOGIN.getStatus(),StatusEnum.USER_NOT_LOGIN.getDesc());
+        }
+        if (user.getRole() != Consts.RoleEnum.ADMIN.getRole()){
+            return ServerResponse.serverResponseByFail(StatusEnum.USER_LIMITED_AUTHORITY.getStatus(),StatusEnum.USER_LIMITED_AUTHORITY.getDesc());
+        }
         ServerResponse sr = service.getCategory(categoryId);
         return sr;
     }
@@ -80,7 +89,16 @@ public class CategoryController {
      * @return
      */
     @RequestMapping(value = "/get_deep_category.do",method = RequestMethod.GET)
-    public ServerResponse getDeepCategory(Integer categoryId){
+    public ServerResponse getDeepCategory(Integer categoryId,HttpSession session){
+        User user =(User) session.getAttribute(StatusEnum.LOGIN_USER);
+        //判断用户是否登录
+        if (user == null){
+            //未登录
+            return ServerResponse.serverResponseByFail(StatusEnum.USER_NOT_LOGIN.getStatus(),StatusEnum.USER_NOT_LOGIN.getDesc());
+        }
+        if (user.getRole() != Consts.RoleEnum.ADMIN.getRole()){
+            return ServerResponse.serverResponseByFail(StatusEnum.USER_LIMITED_AUTHORITY.getStatus(),StatusEnum.USER_LIMITED_AUTHORITY.getDesc());
+        }
         ServerResponse sr = service.getDeepCategory(categoryId);
         return sr;
     }

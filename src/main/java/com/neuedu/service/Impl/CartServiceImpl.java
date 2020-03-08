@@ -4,9 +4,7 @@ import com.neuedu.common.Consts;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.common.StatusEnum;
 import com.neuedu.dao.CartDao;
-import com.neuedu.dao.ProductDao;
 import com.neuedu.pojo.Cart;
-import com.neuedu.pojo.Product;
 import com.neuedu.pojo.vo.CartProductVo;
 import com.neuedu.pojo.vo.CartVo;
 import com.neuedu.pojo.vo.ProductVo;
@@ -159,5 +157,36 @@ public class CartServiceImpl implements ICartService {
         return cartVo;
     }
 
+    /**
+     * 查询购物车中用户已经选中的商品
+     * @param userId
+     * @return
+     */
+    @Override
+    public ServerResponse findCartByUserIdAndChecked(Integer userId) {
+        //参数非空判断
+        if (userId == null){
+            return ServerResponse.serverResponseByFail(StatusEnum.USER_NOT_LOGIN.getStatus(),StatusEnum.USER_NOT_LOGIN.getDesc());
+        }
+        List<Cart> cartList = cartDao.findCartByUserIdAndChecked(userId);
 
+        return ServerResponse.serverResponseBySucess(cartList);
+    }
+
+    /**
+     * 清除购物车中已下单的商品
+     * @param cartList
+     * @return
+     */
+    @Override
+    public ServerResponse deleteBatchByIds(List<Cart> cartList) {
+        if (cartList == null || cartList.size()<=0){
+            return ServerResponse.serverResponseByFail(StatusEnum.PARAM_NOT_EMPTY.getStatus(),StatusEnum.PARAM_NOT_EMPTY.getDesc());
+        }
+        int count = cartDao.deleteBach(cartList);
+        if (count<=0){
+            return ServerResponse.serverResponseByFail(Consts.CartProductEnum.CLEAN_CART_FAILED.getStatus(),Consts.CartProductEnum.CLEAN_CART_FAILED.getDesc());
+        }
+        return ServerResponse.serverResponseBySucess("清除成功");
+    }
 }
