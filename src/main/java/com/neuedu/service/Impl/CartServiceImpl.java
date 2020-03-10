@@ -93,7 +93,6 @@ public class CartServiceImpl implements ICartService {
         if (cartList == null || cartList.size() <= 0) {
             return cartVo;
         }
-        System.out.println(cartList.toString());
         //step2:将List<Cart>转换为List<CartProductVo>
         List<CartProductVo> cartProductVoList = new ArrayList<>();
         //定义购物车总价格变量
@@ -142,7 +141,6 @@ public class CartServiceImpl implements ICartService {
             }
             cartProductVoList.add(cartProductVo);
         }
-        System.out.println(cartProductVoList.toString());
         cartVo.setProductVoList(cartProductVoList);
         //step3:计算购物车总价格
         cartVo.setCartTotalPrice(cartTotaPrice);
