@@ -121,6 +121,8 @@ public class Consts {
         ADD_CART_FAILED(401, "添加购物车失败"),
         UPDATE_CART_FAILED(401, "更新购物车商品失败"),
         CLEAN_CART_FAILED(401,"清除购物车商品失败或未选择购买任何商品"),
+
+        THIS_PRODUCT_NOT_STOCK(402,"该商品没有库存")
         ;
         private int checkCode; //状态码值
         private String desc;//对状态码描述
@@ -160,10 +162,20 @@ public class Consts {
         CREATE_ORDER_FAILED(501, "创建订单失败"),
         CREATE_ORDERITEM_FAILED(501, "创建订单明细失败"),
         REDUCESTOCK_FAILED(501,"商品扣库存失败"),
+        ORDER_CANCEL_FAILED(501,"订单取消失败"),
         //参数为空
         ADDRESS_ISEMPTY(502, "收货地址id不能为空"),
         //购物车为空
         USER_CART_ISEMPTY(503, "用户购物车为空"),
+
+        //订单查询错误
+        ORDER_NOT_EXISTS(504,"订单不存在"),
+
+        //取消订单
+        ORDER_IS_INDEFEASIBLE(505,"已付款，无法取消订单"),
+
+        //重复操作
+        ORDER_ALREADY_CANCELLED(506,"该订单已经被取消"),
         ;
         private int status; //状态码值
         private String desc;//对状态码描述
@@ -179,6 +191,68 @@ public class Consts {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+    }
+
+    public enum shippingStatusEnum {
+        ADDRESS_ADD_FAIL(600,"地址添加失败"),
+
+        RECEIVERNAME_NOT_BE_EMPTY(601,"收货人姓名不能为空"),
+        RECEIVERPHONE_NOT_BE_EMPTY(601,"收货人电话不能为空"),
+        RECEIVERADDRESS_NOT_BE_EMPTY(601,"收货人地址不能为空"),
+        ;
+        private int status; //状态码值
+        private String desc;//对状态码描述
+
+        shippingStatusEnum(int status, String desc) {
+            this.status = status;
+            this.desc = desc;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+    }
+    public enum PayInfoEnum {
+        //支付方式
+        ZHIFUBAO(1,"支付宝支付"),
+        //是否选中
+
+        ;
+        private int checkCode; //状态码值
+        private String desc;//对状态码描述
+
+        PayInfoEnum(int checkCode, String desc) {
+            this.checkCode = checkCode;
+            this.desc = desc;
+        }
+
+        public int getStatus() {
+            return checkCode;
+        }
+
+        public void setStatus(int checkCode) {
+            this.checkCode = checkCode;
         }
 
         public String getDesc() {

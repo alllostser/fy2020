@@ -41,85 +41,7 @@
       #{receiverZip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.neuedu.pojo.Shipping">
-    insert into neuedu_shipping
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="userId != null">
-        user_id,
-      </if>
-      <if test="receiverName != null">
-        receiver_name,
-      </if>
-      <if test="receiverPhone != null">
-        receiver_phone,
-      </if>
-      <if test="receiverMobile != null">
-        receiver_mobile,
-      </if>
-      <if test="receiverProvince != null">
-        receiver_province,
-      </if>
-      <if test="receiverCity != null">
-        receiver_city,
-      </if>
-      <if test="receiverDistrict != null">
-        receiver_district,
-      </if>
-      <if test="receiverAddress != null">
-        receiver_address,
-      </if>
-      <if test="receiverZip != null">
-        receiver_zip,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="receiverName != null">
-        #{receiverName,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverPhone != null">
-        #{receiverPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverMobile != null">
-        #{receiverMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverProvince != null">
-        #{receiverProvince,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverCity != null">
-        #{receiverCity,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverDistrict != null">
-        #{receiverDistrict,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverAddress != null">
-        #{receiverAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverZip != null">
-        #{receiverZip,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.pojo.Shipping">
     update neuedu_shipping
     <set>
@@ -174,4 +96,76 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+<!--   添加收货地址-->
+  <insert id="insertSelective" parameterType="com.neuedu.pojo.Shipping" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into neuedu_shipping
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
+      </if>
+      <if test="receiverPhone != null">
+        receiver_phone,
+      </if>
+      <if test="receiverMobile != null">
+        receiver_mobile,
+      </if>
+      <if test="receiverProvince != null">
+        receiver_province,
+      </if>
+      <if test="receiverCity != null">
+        receiver_city,
+      </if>
+      <if test="receiverDistrict != null">
+        receiver_district,
+      </if>
+      <if test="receiverAddress != null">
+        receiver_address,
+      </if>
+      <if test="receiverZip != null">
+        receiver_zip,
+      </if>
+        create_time,
+        update_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null">
+        #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMobile != null">
+        #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvince != null">
+        #{receiverProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverCity != null">
+        #{receiverCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverDistrict != null">
+        #{receiverDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null">
+        #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverZip != null">
+        #{receiverZip,jdbcType=VARCHAR},
+      </if>
+       now(),
+       now()
+    </trim>
+  </insert>
 </mapper>

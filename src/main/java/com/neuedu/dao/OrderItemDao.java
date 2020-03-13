@@ -22,4 +22,11 @@ public interface OrderItemDao {
      *  将订单明细批量插入订单明细库
      */
     int insertBatch(@Param("orderItems") List<OrderItem> orderItems);
+
+    /**
+     * 根据订单号查询订单详情
+     * */
+    List<OrderItem> findOrderItemByOrderNo(Long orderNo);
+
+
 }

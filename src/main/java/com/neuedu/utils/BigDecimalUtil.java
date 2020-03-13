@@ -27,7 +27,7 @@ public class BigDecimalUtil {
     public static BigDecimal getOrderTotalPrice(List<OrderItem> orderItems){
         BigDecimal orderTotalPrice = new BigDecimal("0");
         for (OrderItem orderItem : orderItems) {
-            orderTotalPrice = BigDecimalUtil.add(String.valueOf(orderTotalPrice), String.valueOf(orderItem.getCurrentUnitPrice()));
+            orderTotalPrice = BigDecimalUtil.add(String.valueOf(orderTotalPrice), String.valueOf(orderItem.getTotalPrice()));
         }
         return orderTotalPrice;
     }

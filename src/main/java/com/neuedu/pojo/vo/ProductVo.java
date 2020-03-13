@@ -26,7 +26,7 @@ public class ProductVo {
 
     private Integer stock;
 
-    private Integer status;
+    private String status;
 
     private String createTime;
 

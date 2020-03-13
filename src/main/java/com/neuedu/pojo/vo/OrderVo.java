@@ -17,7 +17,7 @@ public class OrderVo {
 
     private Integer postage;
 
-    private Integer status;
+    private String status;
 
     private String paymentTime;
 

@@ -193,11 +193,16 @@
       </if>
     </where>
   </select>
-<!--  商品扣库存-->
+<!--  商品更新库存-->
   <update id="reduceStock" parameterType="map">
     update neuedu_product
     set stock = #{stock},
     update_time = now()
     where id = #{productId}
   </update>
+<!--  查询全部商品-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from neuedu_product
+  </select>
 </mapper>

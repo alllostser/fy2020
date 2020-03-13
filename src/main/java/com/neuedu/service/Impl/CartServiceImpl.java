@@ -57,7 +57,7 @@ public class CartServiceImpl implements ICartService {
             //添加购物车
             int result = cartDao.insert(newCart);
             if (result>0){ //添加成功
-                return ServerResponse.serverResponseBySucess(getCartVo(userId));
+                return getCartVo(userId);
             }else {//添加失败
                 return ServerResponse.serverResponseByFail(Consts.CartProductEnum.ADD_CART_FAILED.getStatus(),Consts.CartProductEnum.ADD_CART_FAILED.getDesc());
             }
@@ -65,7 +65,7 @@ public class CartServiceImpl implements ICartService {
             cart.setQuantity(cart.getQuantity()+count);
             int result = cartDao.updateByPrimaryKey(cart);
             if (result>0){
-                return ServerResponse.serverResponseBySucess(getCartVo(userId));
+                return getCartVo(userId);
             }else{
                 return ServerResponse.serverResponseByFail(Consts.CartProductEnum.UPDATE_CART_FAILED.getStatus(),Consts.CartProductEnum.UPDATE_CART_FAILED.getDesc());
             }
@@ -81,17 +81,17 @@ public class CartServiceImpl implements ICartService {
      */
     @Override
     public ServerResponse list(Integer userId) {
-        CartVo cartVo = getCartVo(userId);
+        ServerResponse cartVo = getCartVo(userId);
 
-        return ServerResponse.serverResponseBySucess(cartVo);
+        return cartVo;
     }
 
-    private CartVo getCartVo(Integer userId) {
+    private ServerResponse getCartVo(Integer userId) {
         CartVo cartVo = new CartVo();
         //step1:根据用户id获取购物车信息-->List<Cart>
         List<Cart> cartList = cartDao.findCartByUserId(userId);
         if (cartList == null || cartList.size() <= 0) {
-            return cartVo;
+            return ServerResponse.serverResponseBySucess(cartVo);
         }
         //step2:将List<Cart>转换为List<CartProductVo>
         List<CartProductVo> cartProductVoList = new ArrayList<>();
@@ -152,7 +152,7 @@ public class CartServiceImpl implements ICartService {
             cartVo.setAllChecked(true);
         }
         //step5：返回CartVo
-        return cartVo;
+        return ServerResponse.serverResponseBySucess(cartVo);
     }
 
     /**

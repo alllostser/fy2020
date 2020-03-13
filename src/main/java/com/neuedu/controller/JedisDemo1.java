@@ -30,10 +30,11 @@ public class JedisDemo1{
     public static void main(String[] args){
         // 1. 设置IP地址和端口
         Jedis jedis = new Jedis("123.57.49.162",6379);
+        Jedis jedis1 = new Jedis("123.57.49.162",6381);
         // 2. 保存数据
         jedis.set("name","imooc");
         // 3. 获取数据
-        String value = jedis.get("name");
+        String value = jedis1.get("name");
         System.out.println(value);
         // 4.释放资源
         jedis.close();

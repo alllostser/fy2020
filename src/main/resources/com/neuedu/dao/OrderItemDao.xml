@@ -175,4 +175,13 @@
       now(), now())
     </foreach>
   </insert>
+<!--  根据订单号查询订单详情-->
+  <select id="findOrderItemByOrderNo" parameterType="long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_order_item
+    where order_no = #{orderNo}
+  </select>
+
+
 </mapper>

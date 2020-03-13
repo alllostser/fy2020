@@ -1,8 +1,6 @@
 package com.neuedu.config;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 import com.neuedu.common.RedisApi;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.utils.MD5Utils;
@@ -43,6 +41,7 @@ public class RedisAspect {
         String cacheKey = MD5Utils.getMD5Code(stringBuffer.toString());
         //从缓存中读取数据
         String cacheValue = redisApi.get(cacheKey);
+//        Gson gson =new Gson();
         if (cacheValue == null || "".equals(cacheValue)){//缓存数据为空
             //读DB
             try {
@@ -50,6 +49,7 @@ public class RedisAspect {
 
 
                 Object proceed = joinPoint.proceed();//执行目标方法读取db
+//                cacheValue =gson.toJson(proceed);
                 cacheValue = JSONObject.toJSONString(proceed);
                 //--------after-around-------
                 //写入缓存
@@ -64,6 +64,7 @@ public class RedisAspect {
         }else {
 
             ServerResponse serverResponse = JSONObject.parseObject(cacheValue,ServerResponse.class);
+//            ServerResponse serverResponse = gson.fromJson(cacheValue, ServerResponse.class);
             return serverResponse;
         }
 

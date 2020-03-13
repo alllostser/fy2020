@@ -1,6 +1,6 @@
 package com.neuedu.service.Impl;
 
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSONObject;
 import com.neuedu.common.Consts;
 import com.neuedu.common.RedisApi;
 import com.neuedu.common.ServerResponse;
@@ -10,10 +10,9 @@ import com.neuedu.service.ICategoryService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -147,8 +146,9 @@ public class CategoryServiceImpl implements ICategoryService {
 //        if (s !=null && !"".equals(s)){//如果不为空
 //
 //        }
-        Set<Integer> set = new HashSet<>();
-        Set<Integer> result = findAllSubCategory(set, categoryId);
+//        Set<Integer> set = new HashSet<>();
+        List<Integer> list = new ArrayList<>();
+        List<Integer> result = findAllSubCategory(list, categoryId);
         return ServerResponse.serverResponseBySucess(result);
     }
 
@@ -158,7 +158,7 @@ public class CategoryServiceImpl implements ICategoryService {
      * @param categoryId
      * @return
      */
-    private Set<Integer> findAllSubCategory(Set<Integer> categoryIds,Integer categoryId){
+    private List<Integer> findAllSubCategory(List<Integer> categoryIds,Integer categoryId){
         //step1:先根据categoryId查询类别
         Category category = dao.selectByPrimaryKey(categoryId);
         if (category != null){

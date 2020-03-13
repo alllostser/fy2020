@@ -197,4 +197,26 @@
       null,null, null,
       now(), now())
   </insert>
+<!--  根据订单号查询订单-->
+  <select id="findOrderByOrderNo" parameterType="long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_order
+    where order_no = #{orderNo}
+  </select>
+<!--  获取订单列表（用户）-->
+  <select id="orderListByUserId" parameterType="integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_order
+    where user_id = #{userId}
+  </select>
+<!--  修改订单状态-->
+  <update id="updateOrderStatus">
+    update neuedu_order
+    set status = #{status},
+    payment_time = #{payTime},
+    update_time = now()
+    where order_no = #{orderNo}
+  </update>
 </mapper>

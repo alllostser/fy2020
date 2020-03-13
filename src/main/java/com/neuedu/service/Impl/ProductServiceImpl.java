@@ -1,5 +1,6 @@
 package com.neuedu.service.Impl;
 
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neuedu.common.Consts;
@@ -142,7 +143,7 @@ public class ProductServiceImpl implements IProductService {
             //前端没有传递categoryId和keyword,向前端返回空的数据
             //PageHelper
             PageHelper.startPage(pageNum,pageSize);
-            List<Product> productList = new ArrayList<>();
+            List<Product> productList = productDao.selectAll();
             PageInfo pageInfo = new PageInfo(productList);
             return ServerResponse.serverResponseBySucess(pageInfo);
         }
@@ -150,15 +151,17 @@ public class ProductServiceImpl implements IProductService {
         //step2:判断CategoryId是否传递
         if (categoryId != -1) {//传递了CategoryId
             //查询categoryId下的所有子类
-            ServerResponse<Set<Integer>> deepCategory = categoryService.getDeepCategory(categoryId);
+
+            ServerResponse<List<Integer>>  deepCategory = categoryService.getDeepCategory(categoryId);
             if (deepCategory.isSucess()) {
-                Set<Integer> categoryIds = deepCategory.getData();
-                Iterator<Integer> iterator = categoryIds.iterator();
-                while (iterator.hasNext()) {
-                    categoryList.add(iterator.next());
-                }
+                categoryList =  deepCategory.getData();
+//                Iterator<Integer> iterator = categoryIds.iterator();
+//                while (iterator.hasNext()) {
+//                    System.out.println(iterator.next());
+////                    categoryList.add(iterator.next());
+//                }
             }
-        }
+         }
         //step3:判断keyword是否传递
         if (keyword != null && !"".equals(keyword)) {
             keyword = "%" + keyword + "%";
@@ -193,25 +196,31 @@ public class ProductServiceImpl implements IProductService {
      * 订单引用-商品扣库存
      * @param productId
      * @param quantity
+     * @param type 1为加库存 0为减库存
      * @return
      */
     @Override
-    public ServerResponse reduceStock(Integer productId, Integer quantity) {
+    public ServerResponse updateStock(Integer productId, Integer quantity,Integer type) {
         //非空判断
         if (productId == null || quantity == null){
             return ServerResponse.serverResponseByFail(StatusEnum.PARAM_NOT_EMPTY.getStatus(),StatusEnum.PARAM_NOT_EMPTY.getDesc());
         }
-        //扣库存
         Product product = productDao.selectById(productId);
         if (product == null){
             return ServerResponse.serverResponseByFail(Consts.ProductStatusEnum.PRODUCT_NOT_HAVE.getStatus(),Consts.ProductStatusEnum.PRODUCT_NOT_HAVE.getDesc());
         }
         Integer stock = product.getStock();
-        stock-=quantity;
+        if (type == 0){//扣库存
+            stock-=quantity;
+        }else {//加库存
+            stock+=quantity;
+        }
         int count = productDao.reduceStock(productId,stock);
         if (count<=0){
             return ServerResponse.serverResponseByFail(Consts.OrderStatusEnum.REDUCESTOCK_FAILED.getStatus(),Consts.OrderStatusEnum.REDUCESTOCK_FAILED.getDesc());
         }
         return ServerResponse.serverResponseBySucess("减库存成功");
+
     }
+
 }

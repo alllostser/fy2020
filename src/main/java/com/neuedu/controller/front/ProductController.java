@@ -52,7 +52,7 @@ public class ProductController {
     public ServerResponse list(
             @RequestParam(required = false,defaultValue = "-1")Integer categoryId,
             @RequestParam(required = false,defaultValue = "")String keyword,
-            @RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
+            @RequestParam(value = "pageNum",required = false,defaultValue = "0") Integer pageNum,
             @RequestParam(value = "pageSize",required = false,defaultValue = "10")Integer pageSize,
             @RequestParam(required = false,defaultValue = "")String orderBy
     ){

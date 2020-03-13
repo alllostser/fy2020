@@ -23,4 +23,6 @@ public interface ProductDao {
             @Param("keyword") String keyword);
     //订单引用-商品扣库存
     int reduceStock(@Param("productId") Integer productId,@Param("stock") Integer stock);
+    //查询全部商品
+    List<Product> selectAll();
 }

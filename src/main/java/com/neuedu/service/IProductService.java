@@ -15,5 +15,5 @@ public interface IProductService {
 
 
     //订单引用商品扣库存
-    ServerResponse reduceStock(Integer productId,Integer quantity);
+    ServerResponse updateStock(Integer productId,Integer quantity,Integer type);
 }
