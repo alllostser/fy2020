@@ -440,7 +440,7 @@ public class AlipayUtil {
                 dumpResponse(response);
 
                 // 需要修改为运行机器上的路径
-                String filePath = String.format("C:/Users/GuXinYu/Desktop/qr-%s.png",
+                String filePath = String.format(PropertiesUtil.getProperty("alipay-QRcode-url")+"/qr-%s.png",
                         response.getOutTradeNo());
                 log.info("filePath:" + filePath);
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);

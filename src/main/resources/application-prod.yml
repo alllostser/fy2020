@@ -1,0 +1,51 @@
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  datasource:
+    username: root
+    password: Gxy3286840.
+    url: jdbc:mysql://localhost:3306/itdrjy9?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  servlet:
+    #文件上传文件大小设置
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+mybatis:
+  mapper-locations: classpath:com/neuedu/dao/*Dao.xml
+  type-aliases-package: com.neuedu.pojo
+  config-location: classpath:mybatis-config.xml
+#showSql
+logging:
+  level:
+    com:
+      neuedu:
+        dao: debug
+#redis配置
+redis:
+  maxTotal: 8
+  maxIdle: 8
+  minIdle: 0
+  blockWhenExhausted: true
+  maxWaitMillis: 10000
+  testOnBorrow: true
+  testOnReturn: true
+  jmxEnabled: true
+
+  redisHost: 123.57.49.162
+  redisPort: 6379
+  redisPassword:
+  timeout: 10000
+
+
+

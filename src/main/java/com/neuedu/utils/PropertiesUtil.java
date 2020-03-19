@@ -1,5 +1,7 @@
 package com.neuedu.utils;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -14,9 +16,13 @@ public class PropertiesUtil {
     static {
         prop = new Properties();
         try {
-            InputStream is = new BufferedInputStream(new FileInputStream(getPath() + default_properties));
-            BufferedReader bf = new BufferedReader(new  InputStreamReader(is,"UTF-8"));//解决读取properties文件中产生中文乱码的问题
+            ClassPathResource resource = new ClassPathResource(default_properties);
+            InputStream inputStream = resource.getInputStream();
+            BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
             prop.load(bf);
+            //            InputStream is = new BufferedInputStream(new FileInputStream(getPath() + default_properties));
+//            BufferedReader bf = new BufferedReader(new  InputStreamReader(is,"UTF-8"));//解决读取properties文件中产生中文乱码的问题
+//            prop.load(bf);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,10 +80,10 @@ public class PropertiesUtil {
 
     public static void main(String[] args) {
         PropertiesUtil propertiesUtil = new PropertiesUtil();
-        String name = PropertiesUtil.getProperty("name");
-        String str = propertiesUtil.readProper("config.properties","str");
+        String name = PropertiesUtil.getProperty("alipay_public_key");
+//        String str = propertiesUtil.readProper("config.properties","str");
         Boolean bo = propertiesUtil.getBooleanProperty("boolean", false);
-
-        System.out.println("name=="+name+","+"str=="+str+", boolean == " +bo);
+        System.out.println(getPath());
+        System.out.println("name=="+name+","+", boolean == " +bo);
     }
 }

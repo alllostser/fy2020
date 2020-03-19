@@ -6,6 +6,7 @@ import com.neuedu.common.StatusEnum;
 import com.neuedu.pojo.Product;
 import com.neuedu.pojo.User;
 import com.neuedu.service.IProductService;
+import com.neuedu.utils.FTPUtil;
 import com.neuedu.utils.PropertiesUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,6 +33,7 @@ public class BProductController {
 //        return "upload";
 //    }
     @RequestMapping(value = "/do_upload.do",method = RequestMethod.POST)
+    @CrossOrigin
     public ServerResponse doUpload(@RequestParam("pic") MultipartFile file){
         if (file.isEmpty()){
             return ServerResponse.serverResponseByFail(500,"上传文件不能为空");}
@@ -39,12 +43,21 @@ public class BProductController {
         String ext = filename.substring(filename.lastIndexOf("."));
         //step3:定义新的文件名,为文件生产一个唯一名称
         String newName = UUID.randomUUID().toString();
-        String newFilename = newName+System.currentTimeMillis()+ext;
+        String newFilename = newName+System.currentTimeMillis()+file.getOriginalFilename();
         try {
             //step5:创建文件
             File newFile = new File(PropertiesUtil.getProperty("imageHost")+PropertiesUtil.getProperty("upload"),newFilename);
             newFile.mkdirs();
             file.transferTo(newFile);
+
+            //把file上传到ftp服务器
+            List<File> files = new ArrayList<>();
+            files.add(newFile);
+            boolean result = FTPUtil.uploadFile("/uploadImage", files);
+            if (!result){
+                return ServerResponse.serverResponseByFail(500,"上传Ftp服务器失败");
+            }
+            newFile.delete();
         } catch (IOException e) {
             e.printStackTrace();
         }
